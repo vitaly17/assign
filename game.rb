@@ -2,19 +2,19 @@ class Game
   
   # this class will be responsible for main logic of the game and will have all the methods pertaining to game itself
 
-  def initialize(word) # passing set word and creating instance variable with initial values
-    @secretword = get_secret_word(word) # storing set word as array of letters
+  def initialize(secretword) # passing set word and creating instance variable with initial values
+    @template = get_secret_word(secretword) # storing set word as array of letters
     @errors = 0  # to store 
     @resulta = [] # creating array to store used letters that are present in the word
     @resultb = [] # creating array to store used letters that are absent from the word
-    @status = 0 # instead of variable result in first version
+    @playing = 0 # to indicate if the game is still playing or if we need to exit main loop
   end
 		
-  def get_secret_word(word) # checking if word is set and aborting game if not
-    if(word == nil || word == "")
+  def get_secret_word(secretword) # checking if word is set and aborting game if not
+    if(secretword == nil || secretword == "")
       abort "No words set" # stoppping game loop
     end
-    return word.upcase.split("") # turning word into all capital letters and splitting it into array of letters 
+    return secretword.upcase.split("") # turning word into all capital letters and splitting it into array of letters to be used in variable called template
   end
   
   def start
@@ -26,18 +26,16 @@ class Game
   	puts "Starting game..."
   	sleep 2
   	puts "In this game you will need to guess the secret word, one letter at a time."
-  	sleep 5
+  	sleep 3
   	puts "You have 5 guesses but will be given an extra guess for each letter you guessed correctly."
-  	sleep 5
-  	puts "Here comes the secret word!"
   end
 
   
   def getguess # asking for and getting user input (letter) + calling method to check result (if the letter entered is present int the word)
   
     puts "Please enter a letter "
-    guess = "" # creating a local variable to store letters entered by user
-    while guess == "" || guess == " " do
+    guess = "" # creating local variable to store letters entered by user
+    while guess == "" || guess == " " do # loop will continue asking for a correct user input if nothing is entered / empty string received 
       guess = STDIN.gets.chomp.upcase
     end
     next_step(guess)
@@ -53,7 +51,7 @@ class Game
   # 4. check result (see if there are letters to guess or all the word is guessed correctly) and change status accordingly: 
   # to our made up status 1 (to denote won game) or to our made up status -1 (to denote lost game)
     
-    if @status == -1 || @status == 1 # checking current status of the game
+    if @playing == -1 || @playing == 1 # checking current status of the game
           return
     end
     
@@ -63,11 +61,11 @@ class Game
       return # we do not change status if letter is used and the game will continue
     end
     
-    if secretword.include?(guess) # if letter is in the word then we will add it to to the list of correctly guessed letters
+    if template.include?(guess) # if letter is in the word then we will add it to to the list of correctly guessed letters
       @resulta << guess
       
-      if @resulta.size == @secretword.uniq.size # we check if our array of guessed letters is the same as the word set to see if the game is won (finished)
-      @status = 1
+      if @resulta.size == @template.uniq.size # we check if our array of guessed letters is the same as the word set to see if the game is won (finished)
+      @playing = 1
       end
       
     else # if the letter is not in secret word then it is added to the list of incorrectly guessed letters and increase errors counter by 1
@@ -76,7 +74,7 @@ class Game
       
       
         if errors >= 5 # if the number of errors reach 5 this will change our made up game status to -1 (to denote lost game)
-          @status = -1
+          @playing = -1
         end
     
     end
@@ -84,8 +82,8 @@ class Game
     
   # creating getter methods to access those instance variables from other classes/places of our code
     
-    def secretword
-       return @secretword # return keyword can be ommitted in Ruby
+    def template
+       return @template # return keyword can be ommitted in Ruby
     end
     
     def resulta
@@ -96,8 +94,8 @@ class Game
        @resultb
     end
     
-    def status
-      @status
+    def playing
+      @playing
     end
     
     def errors

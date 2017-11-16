@@ -20,6 +20,7 @@ require "#{File.dirname(__FILE__)}/result"
 module WOF_Game
 	@input = STDIN
 	@output = STDOUT
+	filename = "wordfile.txt"
 	
 	@output.puts 'Enter "1" runs game in command-line window or "2" runs it in web browser.'
 	game = @input.gets.chomp
@@ -41,13 +42,18 @@ module WOF_Game
   
 result = Result.new # creating object of Result class to use it to setup the game, show results and game status
 
-word = result.readwordfile("wordfile.txt") # reading a given file that contains list of words & phrases as separate lines and picking a random line for a new game
+result.readwordfile("wordfile.txt")
 
-game = Game.new(word) # creating instance of Game class and passing a word to it
+secretword = result.gensecretword
+
+
+ # reading a file that contains list of words & phrases as separate lines and picking a random line for a new game
+
+game = Game.new(secretword)
 
 game.start
 
-while game.status == 0 do # game loop-it will continue while our made up status is 0 (to denote situation where user still has guesses AND word is not guessed yet)
+while game.playing == 0 do # game loop-will continue while our made-up status is 0 (to denote situation where user still has guesses AND word is not guessed yet)
   result.show_status(game) # tracking game status and showing it on screen
   game.getguess # getting user input (new letter) + calling another method that will check result
 end
