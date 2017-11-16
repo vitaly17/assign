@@ -1,18 +1,16 @@
 require "./game.rb"
 require "./result.rb"
-require "./word_reader.rb"
 
-result = Result.new
+result = Result.new # creating object to setup the game, show results and game status
 
-reader = WordReader.new
+word = result.readwordfile("wordfile.txt") # reading a given file that contains game words & phrases as separate lines and picking a random line 
 
-slovo = reader.read_from_file("wordfile.txt")
+game = Game.new(word) # creating instance of Game class and passing a word to it
 
-game = Game.new(slovo) # creating instance of Game class and passing a word to it
 
-while game.status == 0 do
-  result.print_status(game) 
-  game.getguess
+while game.status == 0 do # game loop-it will continue while our made up status is 0 (to denote situation where user still has guesses AND word is not guessed yet)
+  result.show_status(game) # tracking game status and showing it on screen
+  game.getguess # getting user input (letter) + calling another method that will check result
 end
 
-result.print_status(game) 
+result.show_status(game) # showing game result upon exiting game loop (in cases when our made up status became -1 to denote lost game or +1 to denote won game)
