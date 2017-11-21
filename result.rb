@@ -20,7 +20,7 @@ def gensecretword
     @wordtable.sample
 end
 
-def show_status(game) # tracking game status and showing it on screen
+def check_status(game) # tracking game status and showing it on screen
     
     puts "Secret word: " + show_word(game.template, game.resulta) # decided to make as a separate method 
     

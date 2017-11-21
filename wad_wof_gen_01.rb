@@ -1,3 +1,8 @@
+# We are not going to use this file  as a part of the working game code. It serves only as an illustration to the basic tests being implemented (passed).
+# It is not included in our game code as such as the game logic implementation containing in it was found to be somewhat verbose. 
+# It was used as a basis for the code below that was written to reflect the author's own approach and understanding and to implement the game in a perceived 
+# better way.
+
 # Ruby code file - All your code should be located between the comments provided.
 
 # Main class module

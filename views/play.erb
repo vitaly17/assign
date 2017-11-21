@@ -1,0 +1,50 @@
+<div class="row">
+<div class="col-md-9">
+
+<h3>Secret word:</h3> 
+<h1>
+	<% @resulta.each do |letter| %>
+		<% if letter == "" %>
+			_
+		<% else %>
+			<%= letter.upcase %>
+		<% end %>
+	<% end %>
+</h1> </br>
+
+<p>Please enter a letter:</p>
+<form method="POST" action="/play" class="form-inline">
+	<div class="form-group">
+	<input type="text" maxlength="1" id="input1" name="guess" autofocus pattern="[A-Za-z]{1}" class="form-control"> <!--ensures only letters can be submitted -->
+  <input type='submit' value='Submit' class="btn btn-primary" >
+</form>
+</div> </br>
+
+<% if @resultb.size > 0 %>
+<p>Letters you guessed incorrectly:</p>
+<h3>
+	<% @resultb.each do |letter| %>
+		<%= letter.upcase %>
+	<% end %>
+	<% end %>
+
+</h3> </br>
+
+</div>
+
+ </br> </br>
+
+<div class="col-md-3">
+	
+				
+          <a href="/new" class="btn btn-warning btn-lg" role="button">Start new game</a> </br></br>
+        
+
+<h4>Turns remaining: <%= @turns_remaining %> </h4> 
+
+</br></br>
+
+</div>
+
+</div>
+

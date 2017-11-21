@@ -1,33 +1,40 @@
 class Game 
   
+  
+  
   # this class will be responsible for main logic of the game and will have all the methods pertaining to game itself
 
   def initialize(secretword) # passing set word and creating instance variable with initial values
-    @template = get_secret_word(secretword) # storing set word as array of letters
-    @errors = 0  # to store 
+    @template = setsecretword(secretword) # storing set word as array of letters
+    @errors = 0  # to store number of incorrect guesses - we will be using this instead of turn variable suggested by base assignment code 
+    #the reason is that we will be giving extra guess for each of correct guesses as a suggested inprovement - to make our game more playable
     @resulta = [] # creating array to store used letters that are present in the word
     @resultb = [] # creating array to store used letters that are absent from the word
-    @playing = 0 # to indicate if the game is still playing or if we need to exit main loop
+    @play = 0 # to indicate if the game is still playing or if we need to exit main loop
   end
+  
+  
+  # creating method to convert our secretword (currently being a string) into array of letters to be used in variable called template
+  # template variable will represent letters already guessed and underscores in places of unguessed letters
 		
-  def get_secret_word(secretword) # checking if word is set and aborting game if not
-    if(secretword == nil || secretword == "")
+  def setsecretword(secretword) 
+    if(secretword == nil || secretword == "") # checking if word is set and aborting game if not
       abort "No words set" # stoppping game loop
     end
     return secretword.upcase.split("") # turning word into all capital letters and splitting it into array of letters to be used in variable called template
   end
   
   def start
-    myname = "Vitaly Amos"
-    student_id = 51772933
+    @myname = "Vitaly Amos"
+    @student_id = 51772933
   	puts "Welcome to WOF!"
-  	puts "Created by: #{myname} (#{student_id})"
+  	puts "Created by: #{@myname} (#{@student_id})"
   	sleep 2
   	puts "Starting game..."
   	sleep 2
   	puts "In this game you will need to guess the secret word, one letter at a time."
   	sleep 3
-  	puts "You have 5 guesses but will be given an extra guess for each letter you guessed correctly."
+  	puts "You have 5 guesses but will be given an extra guess for each letter you guessed correctly." # suggested improvement as it makesgame more playable 
   end
 
   
@@ -38,11 +45,11 @@ class Game
     while guess == "" || guess == " " do # loop will continue asking for a correct user input if nothing is entered / empty string received 
       guess = STDIN.gets.chomp.upcase
     end
-    next_step(guess)
+    check_guess(guess)
   end
 
   
-  def next_step(guess)
+  def check_guess(guess)
     
   # this method should do the following:
   # 1. check current status of the game
@@ -51,7 +58,7 @@ class Game
   # 4. check result (see if there are letters to guess or all the word is guessed correctly) and change status accordingly: 
   # to our made up status 1 (to denote won game) or to our made up status -1 (to denote lost game)
     
-    if @playing == -1 || @playing == 1 # checking current status of the game
+    if @play == -1 || @play == 1 # checking current status of the game
           return
     end
     
@@ -65,7 +72,7 @@ class Game
       @resulta << guess
       
       if @resulta.size == @template.uniq.size # we check if our array of guessed letters is the same as the word set to see if the game is won (finished)
-      @playing = 1
+      @play = 1
       end
       
     else # if the letter is not in secret word then it is added to the list of incorrectly guessed letters and increase errors counter by 1
@@ -74,7 +81,7 @@ class Game
       
       
         if errors >= 5 # if the number of errors reach 5 this will change our made up game status to -1 (to denote lost game)
-          @playing = -1
+          @play = -1
         end
     
     end
@@ -94,8 +101,8 @@ class Game
        @resultb
     end
     
-    def playing
-      @playing
+    def play
+      @play
     end
     
     def errors
