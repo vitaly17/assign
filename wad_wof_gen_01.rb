@@ -1,8 +1,3 @@
-# We are not going to use this file  as a part of the working game code. It serves only as an illustration to the basic tests being implemented (passed).
-# It is not included in our game code as such as the game logic implementation containing in it was found to be somewhat verbose. 
-# It was used as a basis for the code below that was written to reflect the author's own approach and understanding and to implement the game in a perceived 
-# better way.
-
 # Ruby code file - All your code should be located between the comments provided.
 
 # Main class module
@@ -19,14 +14,6 @@ module WOF_Game
 			@output = output
 			@played = 0
 			@score = 0
-			@turn = 0
-			@wordtable = []
-			@secretword = ""
-			@resulta = []
-			@resultb = []
-			@winner = 0
-			@guess = ""
-			@template = "[]"
 		end
 		
 		def getguess
@@ -40,6 +27,7 @@ module WOF_Game
 		end
 		
 		# Any code/methods aimed at passing the RSpect tests should be added below.
+		
 		
 def created_by
 	@myname = "Vitaly Amos"
@@ -62,27 +50,48 @@ def displaymenu
 	@output.puts "Menu: (1) Play | (2) New | (3) Analysis | (9) Exit"
 end
 
+def clear_screen
+	system "clear" or system "cls"
+end
+
+
 def resetgame
+	clear_screen
+			@wordtable = []
+			@secretword = ""
+			@turn = 0
+			@resulta = []
+			@resultb = []
+			@guess = ""
+			@template = "[]"
+			@winner = 0
+			@turnsleft = 0 
 end
 
 def readwordfile(filename)
-	file = File.readlines(filename)
-    file.each { |word| @wordtable << word.strip }
-    file.size
+	@wordtable = []
+	IO.foreach(filename) { |word| @wordtable.push(word.strip) }
+  @wordtable.size
 end
 
 def gensecretword
-end
-
-def setsecretword(value)
-	@secretword = value
+	@wordtable.sample.upcase
 end
 
 def getsecretword
 	@secretword
 end
 
+def setsecretword(secretword)
+  @secretword = secretword
+  @secretword.split("")
+  end
+
 def createtemplate
+	@template = ""
+	n = @secretword.size
+	n.times { @template += "_" }
+	"[" + @template + "]"
 end
 
 def incrementturn
@@ -96,10 +105,8 @@ end
 def turnsleft
 	GOES - 1
 end
-
+	
 		# Any code/methods aimed at passing the RSpect tests should be added above.
 
 	end
 end
-
-

@@ -45,7 +45,7 @@ get '/new' do
 	session[:template] = setsecretword(session[:secretword])
 	session[:resulta] = show_word(session[:secretword])
 	session[:resultb] = []
-	session[:turns_remaining] = 5
+	session[:goes] = 5
 	session[:play] = false
 
 	redirect to('/play')
@@ -58,7 +58,7 @@ helpers do
 		@template = session[:template]
 		@resulta = session[:resulta] 
 		@resultb = session[:resultb]
-		@turns_remaining = session[:turns_remaining]
+		@goes = session[:goes]
 	end
 	
 def readwordfile(filename) 
@@ -79,7 +79,7 @@ end
 	def check_status
 		if session[:template] == session[:resulta]
 			redirect to('/won')
-		elsif session[:turns_remaining] == 0
+		elsif session[:goes] == 0
 			redirect to('/lost')	
 		end
 	end
@@ -113,7 +113,7 @@ end
 		end
 		unless correct
 			session[:resultb].push(guess.downcase)
-			session[:turns_remaining] -= 1
+			session[:goes] -= 1
 		end
 	end
 end
